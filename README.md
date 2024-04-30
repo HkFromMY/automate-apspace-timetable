@@ -2,11 +2,13 @@
 1. Make sure Google Calendar API is enabled. Then, create an OAuth2.0 Client IDs (this will be used to generate credentials.json) and set up the OAuth consent screen properly.
 2. After the set up, remember to login as the user you want to receive notification. (the workflow should be like "Login with Google")
 
-### Notes:
+### Steps:
 1. Follow this documentation: https://cloud.google.com/scheduler/docs/tut-gcf-pub-sub to invoke cloud function periodically. Basically, it just set up a pub/sub that sends message to the cloud function according to the cron expression you've configured. When the cloud function receives the message, it will be invoked. On Cloud Function's end, set up a Pub/Sub trigger so that the function will be invoked when the message is received.
 2. Use local machine to authorize Google Calendar actions using your Google Account first, then export the credentials in pickle format after setting the scope and authorization. The code block below displays the authorize screen if the not cannot find the refresh and access token. Reference: https://medium.com/@ayushbhatnagarmit/supercharge-your-scheduling-automating-google-calendar-with-python-87f752010375 
 
 ```python
+SCOPES = ['https://www.googleapis.com/auth/calendar']
+
 creds = None
 # The file token.pickle stores the user's access and refresh tokens, and is
 # created automatically when the authorization flow completes for the first
@@ -34,4 +36,5 @@ if not creds or not creds.valid:
 ### System Architecture on GCP
 ![System architecture of automation apspace timetable](https://github.com/HkFromMY/automate-apspace-timetable/assets/48499555/b9ffe211-0875-4ec1-94de-05766148c078)
 
-
+### Notes
+- Apparently, the tokens stored will always expired after 7 days, because the OAuth application is not published to production and public according to Google's policy, so this project wouldn't work after 7 days. 
